@@ -7,7 +7,7 @@ from datetime import datetime
 from mediapipe.tasks.python.vision import HandLandmarker, HandLandmarkerOptions, RunningMode
 from mediapipe.tasks.python import BaseOptions
 
-# --- distance between points ---
+# --- distance between points ---   
 def dist(a,b):
     return math.hypot(a.x-b.x,a.y-b.y)
 
