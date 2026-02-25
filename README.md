@@ -1,7 +1,7 @@
 # BracketClick Photo Booth
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/gdguj/BracketClick
 cd gdg
 
 python -m venv venv
