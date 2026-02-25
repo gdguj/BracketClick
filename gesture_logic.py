@@ -44,89 +44,115 @@ def check_brackets_gesture(lm):
     return two_main and horizontal_index and horizontal_middle and same_direction and angle_ok
 
 # --- folder setup ---
-SAVE_FOLDER="captured_photos"
-os.makedirs(SAVE_FOLDER,exist_ok=True)
-
-# --- webcam ---
-cap=cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
-
-# --- model ---
-options=HandLandmarkerOptions(
-    base_options=BaseOptions(model_asset_path="hand_landmarker.task"),
-    running_mode=RunningMode.VIDEO,
-    num_hands=2
-)
-detector=HandLandmarker.create_from_options(options)
-
-frame_id=0
-countdown_started=False
-countdown_start_time=0
+SAVE_FOLDER = "captured_photos"
+os.makedirs(SAVE_FOLDER, exist_ok=True)
 COUNTDOWN_SECONDS = 3
 
-while True:
-    ok,frame=cap.read()
-    if not ok: break
-    h,w,_=frame.shape
 
-    mp_image=mp.Image(
-        image_format=mp.ImageFormat.SRGB,
-        data=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+def get_camera_and_detector():
+    """Create camera and hand landmarker. Call once, reuse."""
+    cap = cv2.VideoCapture(0)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    options = HandLandmarkerOptions(
+        base_options=BaseOptions(model_asset_path="hand_landmarker.task"),
+        running_mode=RunningMode.VIDEO,
+        num_hands=2,
     )
+    detector = HandLandmarker.create_from_options(options)
+    return cap, detector
 
-    result=detector.detect_for_video(mp_image,frame_id)
 
-    left_ok=False
-    right_ok=False
+def process_frame(frame, frame_id, detector, countdown_started, countdown_start_time):
+    """
+    Run gesture detection on one frame. Returns (display_frame, new_countdown_started, new_countdown_start_time, path_to_saved_photo_or_None).
+    """
+    h, w, _ = frame.shape
+    mp_image = mp.Image(
+        image_format=mp.ImageFormat.SRGB,
+        data=cv2.cvtColor(frame, cv2.COLOR_BGR2RGB),
+    )
+    result = detector.detect_for_video(mp_image, frame_id)
 
-    # --- copy frame for display with landmarks ---
+    left_ok = False
+    right_ok = False
     display_frame = frame.copy()
 
     if result.hand_landmarks:
-        for lm,handedness in zip(result.hand_landmarks,result.handedness):
-            label=handedness[0].category_name
-            hand_valid=check_brackets_gesture(lm)
-
-            # draw landmarks + lines only on display_frame
+        for lm, handedness in zip(result.hand_landmarks, result.handedness):
+            label = handedness[0].category_name
+            hand_valid = check_brackets_gesture(lm)
             for p in lm:
-                cv2.circle(display_frame,(int(p.x*w),int(p.y*h)),4,(0,255,0),-1)
-            cv2.line(display_frame,(int(lm[5].x*w),int(lm[5].y*h)),
-                     (int(lm[8].x*w),int(lm[8].y*h)),(255,0,0),2)
-            cv2.line(display_frame,(int(lm[9].x*w),int(lm[9].y*h)),
-                     (int(lm[12].x*w),int(lm[12].y*h)),(0,0,255),2)
-
-            if label=="Left": left_ok=hand_valid
-            else: right_ok=hand_valid
+                cv2.circle(display_frame, (int(p.x * w), int(p.y * h)), 4, (0, 255, 0), -1)
+            cv2.line(
+                display_frame,
+                (int(lm[5].x * w), int(lm[5].y * h)),
+                (int(lm[8].x * w), int(lm[8].y * h)),
+                (255, 0, 0),
+                2,
+            )
+            cv2.line(
+                display_frame,
+                (int(lm[9].x * w), int(lm[9].y * h)),
+                (int(lm[12].x * w), int(lm[12].y * h)),
+                (0, 0, 255),
+                2,
+            )
+            if label == "Left":
+                left_ok = hand_valid
+            else:
+                right_ok = hand_valid
 
     gesture_detected = left_ok and right_ok
+    saved_path = None
 
-    # --- countdown logic ---
     if gesture_detected and not countdown_started:
-        countdown_started=True
-        countdown_start_time=time.time()
+        countdown_started = True
+        countdown_start_time = time.time()
 
     if countdown_started:
-        elapsed=time.time()-countdown_start_time
-        remaining=max(0,COUNTDOWN_SECONDS-int(elapsed))
-        # put countdown text only on display_frame
-        cv2.putText(display_frame,f"Capturing in {remaining}",(30,50),
-                    cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2)
-        if elapsed>=COUNTDOWN_SECONDS:
-            timestamp=datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename=f"photo_{timestamp}.jpg"
-            filepath=os.path.join(SAVE_FOLDER,filename)
-            # save clean frame without landmarks
-            cv2.imwrite(filepath,frame)
+        elapsed = time.time() - countdown_start_time
+        remaining = max(0, COUNTDOWN_SECONDS - int(elapsed))
+        cv2.putText(
+            display_frame,
+            f"Capturing in {remaining}",
+            (30, 50),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (0, 255, 0),
+            2,
+        )
+        if elapsed >= COUNTDOWN_SECONDS:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"photo_{timestamp}.jpg"
+            filepath = os.path.join(SAVE_FOLDER, filename)
+            cv2.imwrite(filepath, frame)
             print(f"Photo saved: {filename}")
-            countdown_started=False
+            saved_path = filepath
+            countdown_started = False
 
-    # show display frame with landmarks & countdown
-    cv2.imshow("BracketClick Photo Booth",display_frame)
-    frame_id+=1
 
-    if cv2.waitKey(1)&0xFF==27:
-        break
+    return display_frame, countdown_started, countdown_start_time, saved_path
 
-cap.release()
-cv2.destroyAllWindows()
+
+# --- standalone run (original behavior) ---
+if __name__ == "__main__":
+    cap, detector = get_camera_and_detector()
+    frame_id = 0
+    countdown_started = False
+    countdown_start_time = 0
+
+    while True:
+        ok, frame = cap.read()
+        if not ok:
+            break
+        display_frame, countdown_started, countdown_start_time, _ = process_frame(
+            frame, frame_id, detector, countdown_started, countdown_start_time
+        )
+        cv2.imshow("BracketClick Photo Booth", display_frame)
+        frame_id += 1
+        if cv2.waitKey(1) & 0xFF == 27:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()

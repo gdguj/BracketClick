@@ -3,9 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BracketClick Photo Booth</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        h1 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .video-wrap {
+            border: 3px solid #4a4a6a;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .video-wrap img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            max-height: 80vh;
+        }
+        .hint {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
-    
+    <h1>BracketClick Photo Booth</h1>
+    <div class="video-wrap">
+        <img src="/video_feed" alt="Camera feed" />
+    </div>
+    <p class="hint">Show the bracket gesture with both hands to start the countdown and capture a photo.</p>
 </body>
 </html>
