@@ -2,7 +2,7 @@
 
 ```bash
 git clone https://github.com/gdguj/BracketClick
-cd gdg
+cd BracketClick
 
 python -m venv venv
 venv\Scripts\activate          # Windows
