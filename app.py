@@ -36,16 +36,21 @@ def generate_frames():
 
 @app.route("/")
 def index():
-    with open("index.html", "r", encoding="utf-8") as f:
-        return f.read()
+    return (
+        "<p>BracketClick backend is running. Use the React app for the UI.</p>"
+        '<p><a href="http://localhost:5173">Open React app</a></p>'
+    )
 
 
 @app.route("/video_feed")
 def video_feed():
-    return Response(
+    response = Response(
         generate_frames(),
         mimetype="multipart/x-mixed-replace; boundary=frame",
     )
+    # Allow React dev server (and other origins) to display the stream
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
 
 
 if __name__ == "__main__":
