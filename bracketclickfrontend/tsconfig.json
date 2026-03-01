@@ -1,7 +1,17 @@
 {
+  // TypeScript Project References Configuration
+  // This root config file uses project references to split TypeScript compilation
+  // into separate projects for better build performance and organization
+
+  // No files are directly compiled by this config
   "files": [],
+
+  // Reference separate TypeScript configurations for different parts of the project
   "references": [
+    // Application source code configuration
     { "path": "./tsconfig.app.json" },
+
+    // Build tool configuration (Vite, etc.)
     { "path": "./tsconfig.node.json" }
   ]
 }

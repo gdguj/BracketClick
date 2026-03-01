@@ -1,22 +1,50 @@
 {
+  // TypeScript configuration for Node.js build scripts (Vite config, etc.)
+  // This config uses newer ES features since it runs in Node.js, not the browser
+
   "compilerOptions": {
+    // Compile to ES2022 syntax (Node.js supports newer features)
     "target": "ES2022",
+
+    // Include type definitions for ES2023 features
     "lib": ["ES2023"],
+
+    // Use ESNext module syntax
     "module": "ESNext",
+
+    // Skip type checking of declaration files for faster compilation
     "skipLibCheck": true,
 
-    /* Bundler mode */
+    /* Bundler mode - optimized for build tools */
+    // Use bundler-specific module resolution
     "moduleResolution": "bundler",
+
+    // Allow importing TypeScript files with extensions
     "allowImportingTsExtensions": true,
+
+    // Ensure each file can be transpiled independently
     "isolatedModules": true,
+
+    // Treat all files as modules
     "moduleDetection": "force",
+
+    // Don't emit output files (executed directly by Vite)
     "noEmit": true,
 
-    /* Linting */
+    /* Linting and type safety */
+    // Enable all strict type checking options
     "strict": true,
+
+    // Report errors on unused local variables
     "noUnusedLocals": true,
+
+    // Report errors on unused function parameters
     "noUnusedParameters": true,
+
+    // Report errors for fallthrough cases in switch statements
     "noFallthroughCasesInSwitch": true
   },
+
+  // Apply this configuration only to the Vite configuration file
   "include": ["vite.config.ts"]
 }

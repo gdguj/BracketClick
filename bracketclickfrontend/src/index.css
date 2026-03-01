@@ -1,3 +1,15 @@
+/**
+ * Global Styles
+ *
+ * This file imports Tailwind CSS utility classes for styling the application.
+ * Tailwind provides a utility-first CSS framework for rapid UI development.
+ */
+
+/* Import Tailwind's base styles (CSS reset and base element styles) */
 @tailwind base;
+
+/* Import Tailwind's component classes (reusable component patterns) */
 @tailwind components;
+
+/* Import Tailwind's utility classes (spacing, colors, typography, etc.) */
 @tailwind utilities;
