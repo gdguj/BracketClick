@@ -1,7 +1,10 @@
 import cv2
-from flask import Flask, Response, jsonify
+from flask import Flask, Response, jsonify, request
 import gesture_logic
 from flask_cors import CORS 
+from email_logic2 import send_email
+import threading
+
 
 app = Flask(__name__)
 CORS(app)
@@ -12,6 +15,7 @@ _frame_id = 0
 _countdown_started = False
 _countdown_start_time = 0
 _gesture_detected = False
+_user_email = None
 
 def get_camera():
     global _cap, _detector
@@ -30,6 +34,14 @@ def generate_frames():
         display_frame, _countdown_started, _countdown_start_time, gesture_data = gesture_logic.process_frame(
             frame, _frame_id, detector, _countdown_started, _countdown_start_time
         )
+
+        if gesture_data and _user_email:
+           print("Sending email to", _user_email)
+
+           threading.Thread(
+                   target=send_email,
+                   args=(_user_email, gesture_data)
+           ).start()
         
         _gesture_detected = _countdown_started 
         
@@ -52,8 +64,13 @@ def video_feed():
 
 @app.route("/capture", methods=["POST"])
 def capture():
-    # Placeholder for Phase 3.3 logic to save the photo
-    return jsonify({"status": "success", "message": "Capture command received"})
+    global _user_email
+    data = request.json
+    _user_email = data.get("email")
+
+    print("Email received from frontend:", _user_email)
+
+    return jsonify({"status": "success", "message": "Email stored"})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False, threaded=True)
