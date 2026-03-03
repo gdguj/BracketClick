@@ -52,17 +52,21 @@ function App() {
     }
   }, [countdown]);
 
-  const triggerBackendCapture = async () => {
-    try {
-      await fetch('http://127.0.0.1:5000/capture', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: savedEmail || email, frame: selectedFrame })
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };
+const triggerBackendCapture = async () => {
+  console.log("Sending to backend:", savedEmail || email, selectedFrame);
+  try {
+    await fetch('http://127.0.0.1:5000/api/selection', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: savedEmail || email,
+        frameId: selectedFrame
+      })
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   const handleEmailKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && email.trim()) setSavedEmail(email);

@@ -95,7 +95,7 @@ def save_selection():
     email = (data.get("email") or "").strip()
     frame_id = data.get("frameId")
 
-    if not email or frame_id is None:
+    if not email:
         return jsonify({"ok": False, "error": "Missing email or frameId"}), 400
 
     # wait up to 3 seconds if capture not ready
@@ -125,11 +125,12 @@ def save_selection():
     print("saved selection:", record)
 
      #Send email in background
-    threading.Thread(
-        target=send_email,
-        args=(email, _last_saved_path)
-     ).start()
-    
+    try:
+        send_email(email, _last_saved_path)
+        print("Email sent to:", email)
+    except Exception as e:
+       print("Email failed:", e)
+
     return jsonify({"ok": True, "record": record}), 200
 
 if __name__ == "__main__":
