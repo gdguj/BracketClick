@@ -52,8 +52,8 @@ COUNTDOWN_SECONDS = 3
 def get_camera_and_detector():
     """Create camera and hand landmarker. Call once, reuse."""
     cap = cv2.VideoCapture(0)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     options = HandLandmarkerOptions(
         base_options=BaseOptions(model_asset_path="hand_landmarker.task"),
         running_mode=RunningMode.VIDEO,
