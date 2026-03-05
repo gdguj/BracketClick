@@ -97,6 +97,166 @@ const triggerBackendCapture = async () => {
         @keyframes statusPulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
         .status-dot-live { animation: statusPulse 1.5s ease-in-out infinite; }
 
+        .page {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
+        .container {
+          width: 100%;
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 18px 18px 28px;
+        }
+        @media (min-width: 720px) {
+          .container { padding: 22px 28px 34px; }
+        }
+
+        .hero {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+        }
+        .camera-shell {
+          width: min(100%, 980px);
+          border-radius: 22px;
+          overflow: hidden;
+          box-shadow: 0 18px 60px rgba(0,0,0,0.18);
+          border: 6px solid rgba(255,255,255,0.92);
+          background: #1e1e1e;
+          position: relative;
+          aspect-ratio: 16/9;
+        }
+        .camera-img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+        .camera-vignette {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(closest-side, rgba(0,0,0,0) 65%, rgba(0,0,0,0.35) 100%);
+          pointer-events: none;
+        }
+        .countdown-overlay {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          z-index: 20;
+          pointer-events: none;
+        }
+        .countdown-chip {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding: 14px 18px;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.92);
+          backdrop-filter: blur(10px);
+          border: 2px solid rgba(255,255,255,0.95);
+          box-shadow: 0 12px 34px rgba(0,0,0,0.22);
+        }
+        .countdown-emoji {
+          font-size: 2.6rem;
+          line-height: 1;
+        }
+        .countdown-number {
+          font-size: 3.1rem;
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: -1px;
+          color: #1f1f1f;
+        }
+        .status-row {
+          width: min(100%, 980px);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        .status-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 14px;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.78);
+          backdrop-filter: blur(10px);
+          border: 1.5px solid rgba(255,255,255,0.92);
+          box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+        .status-text {
+          font-size: 14px;
+          font-weight: 900;
+          color: #373636;
+          text-transform: uppercase;
+          letter-spacing: 1.2px;
+        }
+        .hint {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          padding: 10px 16px;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.72);
+          backdrop-filter: blur(10px);
+          border: 1.5px solid rgba(255,255,255,0.92);
+          box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+        .hint p {
+          margin: 0;
+          font-size: 13px;
+          color: #5F6368;
+          font-weight: 800;
+        }
+
+        .controls {
+          width: min(100%, 980px);
+          margin: 14px auto 0;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        @media (min-width: 860px) {
+          .controls { grid-template-columns: 1.25fr 1fr; gap: 16px; }
+        }
+        .card {
+          background: rgba(255,255,255,0.85);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 22px;
+          border: 1.5px solid rgba(255,255,255,0.92);
+          box-shadow: 0 8px 26px rgba(0,0,0,0.08);
+        }
+        .card-title {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin: 0 0 16px;
+        }
+        .card-title h2 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: 900;
+          color: #373636;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+        }
+        .accent {
+          width: 6px;
+          height: 26px;
+          border-radius: 99px;
+        }
+
         .frame-btn {
           border-radius: 10px;
           border: 3px solid #e0e0e0;
@@ -164,125 +324,162 @@ const triggerBackendCapture = async () => {
       </header>
 
       {/* ── MAIN ── */}
-      <main style={{ maxWidth: 1200, margin: '0 auto', padding: '18px 28px 28px' }}>
-
-        {/* Gesture hint — compact */}
-        <div style={{
-          background: 'rgba(255,255,255,0.75)', backdropFilter: 'blur(8px)',
-          borderRadius: 999, padding: '8px 24px', marginBottom: 16,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-          border: '1.5px solid rgba(255,255,255,0.9)',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-        }}>
-          <span style={{ fontSize: 18, fontWeight: 900, color: '#EA4335' }}>&lt;</span>
-          <p style={{ margin: 0, fontSize: 13, color: '#5F6368', fontWeight: 700 }}>
-            Make <strong style={{ color: '#373636' }}>&lt; &gt;</strong> gestures with both hands to start the countdown
-          </p>
-          <span style={{ fontSize: 18, fontWeight: 900, color: '#34A853' }}>&gt;</span>
-        </div>
-
-        {/* 2-column: left controls, right camera (camera gets more space) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, alignItems: 'stretch' }}>
-
-          {/* ── LEFT ── */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-
-            {/* Frame picker */}
-            <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 20, padding: '24px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
-                <div style={{ width: 6, height: 28, borderRadius: 99, background: '#4285F4' }} />
-                <h2 style={{ margin: 0, fontSize: 20, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 1.5 }}>Choose Frame</h2>
+      <main className="page">
+        <div className="container">
+          <section className="hero">
+            <div className="status-row">
+              <div className="status-pill" aria-live="polite">
+                <div
+                  className={isOffline ? '' : 'status-dot-live'}
+                  style={{
+                    width: 12,
+                    height: 12,
+                    borderRadius: '50%',
+                    background: isOffline ? '#EA4335' : '#34A853',
+                    boxShadow: `0 0 0 5px ${isOffline ? 'rgba(234,67,53,0.18)' : 'rgba(52,168,83,0.18)'}`,
+                  }}
+                />
+                <span className="status-text">{countdown !== null ? 'COUNTDOWN' : systemStatus}</span>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>
-                {[1, 2, 3].map((frame) => (
-                  <button key={frame} onClick={() => setSelectedFrame(frame)} className={`frame-btn ${selectedFrame === frame ? 'active' : ''}`}>
-                    <img src={`/frames/${frame === 1 ? 'Frame1' : `frame${frame}`}.svg`} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
-                  </button>
-                ))}
+
+              <div className="hint">
+                <span style={{ fontSize: 16, fontWeight: 900, color: '#EA4335' }}>&lt;</span>
+                <p>
+                  Make <strong style={{ color: '#373636' }}>&lt; &gt;</strong> gestures with both hands to start the countdown
+                </p>
+                <span style={{ fontSize: 16, fontWeight: 900, color: '#34A853' }}>&gt;</span>
               </div>
             </div>
 
-            {/* Email */}
-            <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 20, padding: '24px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                <div style={{ width: 6, height: 28, borderRadius: 99, background: '#34A853' }} />
-                <label htmlFor="email" style={{ margin: 0, fontSize: 20, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 1.5 }}>Enter Email</label>
-              </div>
-              <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={handleEmailKeyDown} placeholder="example@email.com" style={{ fontSize: 17, padding: '15px 18px', borderRadius: 14 }} />
-              {savedEmail && <p style={{ margin: '10px 0 0', fontSize: 14, color: '#34A853', fontWeight: 700 }}>✓ {savedEmail}</p>}
-            </div>
-
-            {/* Status */}
-            <div style={{
-              borderRadius: 20,
-              height: 110,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              border: `2.5px solid ${countdown !== null ? '#4285F4' : 'rgba(255,255,255,0.9)'}`,
-              background: countdown !== null
-                ? 'linear-gradient(135deg, #e8f0fe, #fce8f3)'
-                : 'rgba(255,255,255,0.85)',
-              backdropFilter: 'blur(8px)',
-              transition: 'all 0.3s',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.07)',
-              overflow: 'hidden',
-            }}>
-              {countdown !== null ? (
-                <div key={countdown} className="pop-in" style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '0 28px' }}>
-                  <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    {countdown > 0 && <div className="pulse-ring" style={{ position: 'absolute', width: 56, height: 56, borderRadius: '50%', background: '#4285F4', opacity: 0.18 }} />}
-                    <span style={{ fontSize: '2.8rem' }}>{emoji}</span>
-                  </div>
-                  <span style={{ fontSize: '3rem', fontWeight: 900, lineHeight: 1, color: countdown === 0 ? '#4285F4' : '#373636' }}>
-                    {countdown === 0 ? 'SMILE!' : countdown}
-                  </span>
-                </div>
-              ) : (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div className={isOffline ? '' : 'status-dot-live'} style={{ width: 14, height: 14, borderRadius: '50%', background: isOffline ? '#EA4335' : '#34A853', boxShadow: `0 0 0 5px ${isOffline ? 'rgba(234,67,53,0.2)' : 'rgba(52,168,83,0.2)'}` }} />
-                  <p style={{ margin: 0, fontSize: 22, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 2 }}>{systemStatus}</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* ── RIGHT — Camera (large) ── */}
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
-            {/* Bracket hints */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 6px' }}>
-              <span style={{ fontSize: 22, fontWeight: 900, color: '#EA4335', opacity: 0.4 }}>&lt;</span>
-              <span style={{ fontSize: 22, fontWeight: 900, color: '#34A853', opacity: 0.4 }}>&gt;</span>
-            </div>
-
-            {/* Camera container */}
-            <div style={{
-              borderRadius: 20,
-              overflow: 'hidden',
-              boxShadow: '0 16px 56px rgba(0,0,0,0.2)',
-              border: '6px solid rgba(255,255,255,0.95)',
-              position: 'relative',
-              background: '#1e1e1e',
-              width: '100%',
-              aspectRatio: '16/9',
-            }}>
+            <div className="camera-shell">
               <img
                 src="http://127.0.0.1:5000/video_feed"
                 alt=""
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={(e) => { (e.target as HTMLImageElement).src = "https://via.placeholder.com/640x360?text=Connecting..."; }}
+                className="camera-img"
+                onError={(e) => { (e.target as HTMLImageElement).src = "https://via.placeholder.com/1280x720?text=Connecting..."; }}
               />
+              <div className="camera-vignette" />
+
+              {countdown !== null && (
+                <div className="countdown-overlay">
+                  <div key={countdown} className="countdown-chip pop-in">
+                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {countdown > 0 && (
+                        <div
+                          className="pulse-ring"
+                          style={{
+                            position: 'absolute',
+                            width: 58,
+                            height: 58,
+                            borderRadius: '50%',
+                            background: '#4285F4',
+                            opacity: 0.16,
+                          }}
+                        />
+                      )}
+                      <span className="countdown-emoji">{emoji}</span>
+                    </div>
+                    <span className="countdown-number" style={{ color: countdown === 0 ? '#4285F4' : '#1f1f1f' }}>
+                      {countdown === 0 ? 'SMILE!' : countdown}
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {isFlashing && (
                 <div className="camera-flash" style={{ position: 'absolute', inset: 0, background: 'white', zIndex: 50, pointerEvents: 'none' }} />
               )}
             </div>
 
-            {/* Color bar */}
-            <div style={{ display: 'flex', gap: 5 }}>
+            <div style={{ width: 'min(100%, 980px)', display: 'flex', gap: 6 }}>
               {(['#4285F4','#EA4335','#F9AB00','#34A853','#4285F4','#EA4335'] as string[]).map((c, i) => (
                 <div key={i} style={{ height: 7, borderRadius: 999, background: c, flex: 1, opacity: 0.65 }} />
               ))}
             </div>
-          </div>
 
+            <section className="controls">
+              <div className="card">
+                <div className="card-title">
+                  <div className="accent" style={{ background: '#4285F4' }} />
+                  <h2>Choose Frame</h2>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 14 }}>
+                  {[1, 2, 3].map((frame) => (
+                    <button
+                      key={frame}
+                      onClick={() => setSelectedFrame(frame)}
+                      className={`frame-btn ${selectedFrame === frame ? 'active' : ''}`}
+                      aria-pressed={selectedFrame === frame}
+                    >
+                      <img
+                        src={`/frames/${frame === 1 ? 'Frame1' : `frame${frame}`}.svg`}
+                        alt={`Frame ${frame}`}
+                        style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+                      />
+                    </button>
+                  ))}
+                </div>
+                {selectedFrame === null && (
+                  <p style={{ margin: '14px 0 0', fontSize: 13, color: '#5F6368', fontWeight: 700 }}>
+                    Tip: pick a frame before the countdown starts.
+                  </p>
+                )}
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <div className="card">
+                  <div className="card-title">
+                    <div className="accent" style={{ background: '#34A853' }} />
+                    <h2>Enter Email</h2>
+                  </div>
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={handleEmailKeyDown}
+                    placeholder="example@email.com"
+                    style={{ fontSize: 16, padding: '14px 16px', borderRadius: 14 }}
+                  />
+                  {savedEmail && (
+                    <p style={{ margin: '10px 0 0', fontSize: 14, color: '#34A853', fontWeight: 800 }}>
+                      ✓ Saved: {savedEmail}
+                    </p>
+                  )}
+                </div>
+
+                <div className="card" style={{ padding: 18, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div
+                      className={isOffline ? '' : 'status-dot-live'}
+                      style={{
+                        width: 14,
+                        height: 14,
+                        borderRadius: '50%',
+                        background: isOffline ? '#EA4335' : '#34A853',
+                        boxShadow: `0 0 0 6px ${isOffline ? 'rgba(234,67,53,0.18)' : 'rgba(52,168,83,0.18)'}`,
+                      }}
+                    />
+                    <div>
+                      <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: '#5F6368', letterSpacing: 1.4, textTransform: 'uppercase' }}>
+                        System
+                      </p>
+                      <p style={{ margin: '2px 0 0', fontSize: 18, fontWeight: 900, color: '#373636', letterSpacing: 1 }}>
+                        {systemStatus}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ width: 8, height: 8, borderRadius: 999, background: selectedFrame ? '#4285F4' : '#9AA0A6' }} />
+                    <p style={{ margin: 0, fontSize: 13, color: '#5F6368', fontWeight: 800 }}>
+                      Frame: <span style={{ color: '#373636' }}>{selectedFrame ?? 'None'}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
         </div>
       </main>
     </div>
