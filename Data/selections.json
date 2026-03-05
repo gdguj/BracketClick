@@ -3,6 +3,14 @@
     "email": "test@example.com",
     "frameId": 1,
     "imageFile": "photo_20260305_202023.jpg",
-    "savedAt": 1772731562
+    "savedAt": 1772731562,
+    "framed_image": "framed_photo_20260305_202023.png"
+  },
+  {
+    "email": "a@gmail.com",
+    "frameId": 3,
+    "imageFile": "photo_20260305_202956.jpg",
+    "savedAt": 1772731796,
+    "framed_image": "framed_photo_20260305_202956.png"
   }
 ]
