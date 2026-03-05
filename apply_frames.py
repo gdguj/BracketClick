@@ -14,7 +14,7 @@ os.makedirs(output_folder, exist_ok=True)
 
 # --- Map frameId to frame file ---
 frames_dict = {
-    1: "Frame1.svg",
+    1: "frame1.svg",
     2: "frame2.svg",
     3: "frame3.svg"
 }

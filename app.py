@@ -7,6 +7,7 @@ from flask_cors import CORS
 import gesture_logic
 from email_logic2 import send_email
 import threading
+from apply_frames import apply_frame
 
 
 app = Flask(__name__)
@@ -124,9 +125,31 @@ def save_selection():
     print("Saved to:", SELECTIONS_JSON)
     print("saved selection:", record)
 
+    # Apply frame before sending email
+    try:
+        frames_dict = {
+            1: "frame1.png",
+            2: "frame2.png",
+            3: "frame3.png"
+       }
+
+        frame_file = frames_dict.get(int(frame_id))
+        frame_path = os.path.join(BASE_DIR, "frames", frame_file)
+
+        output_folder = os.path.join(BASE_DIR, "framed_photos")
+        os.makedirs(output_folder, exist_ok=True)
+
+        output_path = os.path.join(output_folder, f"framed_{os.path.basename(_last_saved_path)}")
+
+        framed_path = apply_frame(_last_saved_path, frame_path, output_path)
+
+    except Exception as e:
+         print("Frame failed:", e)
+         framed_path = _last_saved_path
+
      #Send email in background
     try:
-        send_email(email, _last_saved_path)
+        send_email(email, framed_path)
         print("Email sent to:", email)
     except Exception as e:
        print("Email failed:", e)

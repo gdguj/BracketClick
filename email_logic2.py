@@ -6,7 +6,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 from email.mime.image import MIMEImage
 
-SENDER_EMAIL = "bracketclickgdg@gmail.com"
+SENDER_EMAIL = "gdgoc.dev@gmail.com"
 APP_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 def send_email(to_email, image_path):
@@ -25,17 +25,17 @@ def send_email(to_email, image_path):
            Hi there! 👋<br><br>
  
            Thank you for trying the BracketClick Photo Booth by 
-           Google Developer Groups (GDG) — University of Jeddah.<br><br>
+           Google Developer Groups on Campus (GDGoC) — University of Jeddah.<br><br>
 
            We hope you enjoyed the experience!  
            Your captured photo is attached to this email.<br><br>
 
            Feel free to share your photo on X and tag us using <b>#GDGUJ</b> — we'd love to see it! 📸 <br><br>
 
-           See you at our next GDG event 🚀<br><br>
+           See you at our next GDGoC event 🚀<br><br>
 
            Best regards,<br>
-           Google Developer Groups (GDG)<br>
+           Google Developer Groups on Campus (GDGoC)<br>
            University of Jeddah
 
           </body>
