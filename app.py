@@ -22,7 +22,7 @@ _gesture_detected = False
 
 # JSON storage 
 BASE_DIR = os.path.dirname(__file__)
-DATA_DIR = os.path.join(BASE_DIR, "data")
+DATA_DIR = os.path.join(BASE_DIR, "Data")
 os.makedirs(DATA_DIR, exist_ok=True)
 SELECTIONS_JSON = os.path.join(DATA_DIR, "selections.json")
 
