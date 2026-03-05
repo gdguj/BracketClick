@@ -113,15 +113,15 @@ def process_frame(frame, frame_id, detector, countdown_started, countdown_start_
     if countdown_started:
         elapsed = time.time() - countdown_start_time
         remaining = max(0, COUNTDOWN_SECONDS - int(elapsed))
-        cv2.putText(
-            display_frame,
-            f"Capturing in {remaining}",
-            (30, 50),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            1,
-            (0, 255, 0),
-            2,
-        )
+        # cv2.putText(
+        #     display_frame,
+        #     f"Capturing in {remaining}",
+        #     (30, 50),
+        #     cv2.FONT_HERSHEY_SIMPLEX,
+        #     1,
+        #     (0, 255, 0),
+        #     2,
+        # )
         if elapsed >= COUNTDOWN_SECONDS:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"photo_{timestamp}.jpg"
