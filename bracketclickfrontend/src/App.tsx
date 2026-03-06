@@ -57,10 +57,17 @@ function App() {
 
   const triggerBackendCapture = async () => {
     try {
+<<<<<<< HEAD
       await fetch('http://127.0.0.1:5000/api/selection', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: savedEmail || email, frameId: selectedFrame })
+=======
+      await fetch('http://127.0.0.1:5000/capture', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: savedEmail || email, frame: selectedFrame })
+>>>>>>> 2273541d7b8030890312cfd983de94c2b63bd73b
       });
     } catch (err) {
       console.error(err);
@@ -106,6 +113,7 @@ function App() {
           gap: 8px;
         }
 
+<<<<<<< HEAD
        .camera-card {
          width: 1280px;
          margin: 0 auto;
@@ -136,6 +144,42 @@ function App() {
           max-width: 1280px;
           margin: 0 auto;
           display: flex;
+=======
+        .camera-card {
+          flex: 1;
+          min-height: 0;
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          background: rgba(255,255,255,0.88);
+          backdrop-filter: blur(10px);
+          border-radius: 16px;
+          padding: 10px;
+          border: 1.5px solid rgba(255,255,255,0.9);
+          box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+          display: flex;
+          flex-direction: column;
+        }
+
+        .camera-shell {
+          flex: 1;
+          min-height: 0;
+          width: 100%;
+          border-radius: 12px;
+          overflow: hidden;
+          position: relative;
+          background: #1e1e1e;
+          border: 4px solid rgba(255,255,255,0.95);
+          box-shadow: 0 14px 44px rgba(0,0,0,0.22);
+        }
+
+        .frames-row {
+          flex-shrink: 0;
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          display: flex;
+>>>>>>> 2273541d7b8030890312cfd983de94c2b63bd73b
           gap: 8px;
           justify-content: center;
           align-items: center;
@@ -245,6 +289,7 @@ function App() {
         {/* ══ CAMERA (center, full size) ══ */}
         <section className="camera-card">
           <div className="camera-shell">
+<<<<<<< HEAD
   <img
     src="http://127.0.0.1:5000/video_feed"
     alt="camera feed"
@@ -291,6 +336,16 @@ function App() {
     />
   )}
 </div>
+=======
+            <img
+              src="http://127.0.0.1:5000/video_feed"
+              alt=""
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+              onError={(e) => { (e.target as HTMLImageElement).src = "https://via.placeholder.com/640x360?text=Connecting..."; }}
+            />
+            {isFlashing && <div className="camera-flash" style={{ position: 'absolute', inset: 0, background: 'white', zIndex: 50, pointerEvents: 'none' }} />}
+          </div>
+>>>>>>> 2273541d7b8030890312cfd983de94c2b63bd73b
         </section>
 
         {/* ══ FRAMES (single row under camera) ══ */}
