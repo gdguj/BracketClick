@@ -10,11 +10,14 @@ json_file = "Data/selections.json"
 
 os.makedirs(output_folder, exist_ok=True)
 
-# Map frameId to frame file
+# Map frameId to frame file — 6 frames with correct capitalization
 frames_dict = {
-    1: "frame1.png",
-    2: "frame2.png",
-    3: "frame3.png"
+    1: "Frame1.png",
+    2: "Frame2.png",
+    3: "Frame3.png",
+    4: "Frame4.png",
+    5: "Frame5.png",
+    6: "Frame6.png",
 }
 
 # Apply frame 
@@ -60,6 +63,14 @@ for entry in selections:
         continue
 
     frame_path = os.path.join(frames_folder, frame_file)
+
+    if not os.path.exists(image_path):
+        print(f"Image not found: {image_path}")
+        continue
+
+    if not os.path.exists(frame_path):
+        print(f"Frame not found: {frame_path}")
+        continue
 
     output_name = f"framed_{image_file}"
     output_path = os.path.join(output_folder, output_name)

@@ -15,6 +15,7 @@ def send_email(to_email, image_path):
             print("EMAIL_PASSWORD not set.")
             return
 
+        
         subject = "📸 Your BracketClick Photo is Ready!"
         body = """
         <html>
@@ -30,12 +31,12 @@ def send_email(to_email, image_path):
            We hope you enjoyed the experience!  
            Your captured photo is attached to this email.<br><br>
 
-           Feel free to share your photo on X and tag us using <b>#GDGUJ</b> — we'd love to see it! 📸 <br><br>
+           <b>Feel free to share your photo on X and tag us using #GDGUJ</b> — we'd love to see it! 📸 <br><br>
 
            See you at our next GDGoC event 🚀<br><br>
 
            Best regards,<br>
-           Google Developer Groups on Campus (GDGoC)<br>
+           Google Developer Groups on Campus (GDGoC) - AI Committee Team🍅<br>
            University of Jeddah
 
           </body>
