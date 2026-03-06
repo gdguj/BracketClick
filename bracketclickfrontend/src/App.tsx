@@ -7,6 +7,9 @@ const COUNTDOWN_EMOJIS: Record<number, string> = {
   0: '📸',
 };
 
+// All 6 frames by filename
+const FRAMES = ['Frame1', 'Frame2', 'Frame3', 'Frame4', 'Frame5', 'Frame6'];
+
 function App() {
   const [selectedFrame, setSelectedFrame] = useState<number | null>(null);
   const [email, setEmail] = useState('');
@@ -72,11 +75,7 @@ function App() {
   const isOffline = systemStatus === 'SERVER OFFLINE';
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      fontFamily: "'Nunito', sans-serif",
-      background: 'linear-gradient(135deg, #e8f0fe 0%, #fff8e1 35%, #e6f4ea 65%, #fce8e6 100%)',
-    }}>
+    <div style={{ minHeight: '100vh', height: '100vh', overflow: 'hidden', fontFamily: "'Nunito', sans-serif", background: 'linear-gradient(135deg, #e8f0fe 0%, #fff8e1 35%, #e6f4ea 65%, #fce8e6 100%)' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&display=swap');
 
@@ -99,21 +98,21 @@ function App() {
           transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
           background: white;
           overflow: hidden;
-          aspect-ratio: 16/9;
           cursor: pointer;
           padding: 0;
           display: block;
           width: 100%;
+          height: 100%;
         }
-        .frame-btn:hover { transform: scale(1.06); border-color: #aaa; }
+        .frame-btn:hover { transform: scale(1.04); border-color: #aaa; }
         .frame-btn.active { border-color: #4285F4; box-shadow: 0 0 0 4px rgba(66,133,244,0.22); }
 
         input[type="email"] {
           width: 100%;
-          padding: 11px 15px;
-          border-radius: 10px;
+          padding: 15px 18px;
+          border-radius: 14px;
           border: 2px solid #e0e0e0;
-          font-size: 14px;
+          font-size: 17px;
           font-family: inherit;
           outline: none;
           transition: border-color 0.2s, box-shadow 0.2s;
@@ -125,13 +124,12 @@ function App() {
 
       {/* ── HEADER ── */}
       <header style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(12px)', borderBottom: '2px solid rgba(255,255,255,0.9)', padding: '14px 0 0', position: 'sticky', top: 0, zIndex: 100 }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ maxWidth: 1300, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', gap: 7 }}>
             {(['#4285F4','#EA4335','#F9AB00','#34A853'] as string[]).map((c, i) => (
               <div key={i} style={{ width: 12, height: 12, borderRadius: '50%', background: c, animation: `floatDot ${1.2 + i*0.2}s ease-in-out infinite`, animationDelay: `${i*0.15}s` }} />
             ))}
           </div>
-
           <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
             <span style={{ fontSize: 36, fontWeight: 900, color: 'transparent', WebkitTextStroke: '2.5px #EA4335' }}>&lt;</span>
             <h1 style={{ fontSize: 26, fontWeight: 900, margin: 0, letterSpacing: -0.5 }}>
@@ -143,16 +141,13 @@ function App() {
             </h1>
             <span style={{ fontSize: 36, fontWeight: 900, color: 'transparent', WebkitTextStroke: '2.5px #34A853' }}>&gt;</span>
           </div>
-
           <div style={{ display: 'flex', gap: 7 }}>
             {(['#34A853','#F9AB00','#EA4335','#4285F4'] as string[]).map((c, i) => (
               <div key={i} style={{ width: 12, height: 12, borderRadius: '50%', background: c, animation: `floatDot ${1.2 + i*0.2}s ease-in-out infinite`, animationDelay: `${(3-i)*0.15}s` }} />
             ))}
           </div>
         </div>
-
-        {/* Color bars */}
-        <div style={{ display: 'flex', gap: 3, padding: '10px 28px 0', maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ display: 'flex', gap: 3, padding: '10px 28px 0', maxWidth: 1300, margin: '0 auto' }}>
           {(['#4285F4','#EA4335','#F9AB00','#34A853'] as string[]).map((c, i) => (
             <div key={i} style={{ height: 6, borderRadius: 999, background: c, flex: 1 }} />
           ))}
@@ -160,123 +155,97 @@ function App() {
       </header>
 
       {/* ── MAIN ── */}
-      <main style={{ maxWidth: 1200, margin: '0 auto', padding: '18px 28px 28px' }}>
+      <main style={{ maxWidth: 1300, margin: '0 auto', padding: '12px 28px 12px', height: 'calc(100vh - 90px)', display: 'flex', flexDirection: 'column', gap: 10, boxSizing: 'border-box' }}>
 
-        {/* Gesture hint — compact */}
+        {/* Gesture hint */}
         <div style={{
           background: 'rgba(255,255,255,0.75)', backdropFilter: 'blur(8px)',
-          borderRadius: 999, padding: '8px 24px', marginBottom: 16,
+          borderRadius: 999, padding: '7px 24px', flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-          border: '1.5px solid rgba(255,255,255,0.9)',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+          border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
         }}>
-          <span style={{ fontSize: 18, fontWeight: 900, color: '#EA4335' }}>&lt;</span>
+          <span style={{ fontSize: 16, fontWeight: 900, color: '#EA4335' }}>&lt;</span>
           <p style={{ margin: 0, fontSize: 13, color: '#5F6368', fontWeight: 700 }}>
             Make <strong style={{ color: '#373636' }}>&lt; &gt;</strong> gestures with both hands to start the countdown
           </p>
-          <span style={{ fontSize: 18, fontWeight: 900, color: '#34A853' }}>&gt;</span>
+          <span style={{ fontSize: 16, fontWeight: 900, color: '#34A853' }}>&gt;</span>
         </div>
 
-        {/* 2-column: left controls, right camera (camera gets more space) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22, alignItems: 'stretch' }}>
+        {/* ── 2x2 grid fills remaining height ── */}
+        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr auto', gap: 12, minHeight: 0 }}>
 
-          {/* ── LEFT ── */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-
-            {/* Frame picker */}
-            <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 20, padding: '24px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
-                <div style={{ width: 6, height: 28, borderRadius: 99, background: '#4285F4' }} />
-                <h2 style={{ margin: 0, fontSize: 20, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 1.5 }}>Choose Frame</h2>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>
-                {[1, 2, 3].map((frame) => (
-                  <button key={frame} onClick={() => setSelectedFrame(frame)} className={`frame-btn ${selectedFrame === frame ? 'active' : ''}`}>
-                    <img src={`/frames/${frame === 1 ? 'Frame1' : `frame${frame}`}.svg`} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
-                  </button>
-                ))}
-              </div>
+          {/* ══ TOP-LEFT: Frames ══ */}
+          <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 18, padding: '16px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexShrink: 0 }}>
+              <div style={{ width: 5, height: 22, borderRadius: 99, background: '#4285F4' }} />
+              <h2 style={{ margin: 0, fontSize: 16, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 1.5 }}>Choose Frame</h2>
             </div>
-
-            {/* Email */}
-            <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 20, padding: '24px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                <div style={{ width: 6, height: 28, borderRadius: 99, background: '#34A853' }} />
-                <label htmlFor="email" style={{ margin: 0, fontSize: 20, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 1.5 }}>Enter Email</label>
-              </div>
-              <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={handleEmailKeyDown} placeholder="example@email.com" style={{ fontSize: 17, padding: '15px 18px', borderRadius: 14 }} />
-              {savedEmail && <p style={{ margin: '10px 0 0', fontSize: 14, color: '#34A853', fontWeight: 700 }}>✓ {savedEmail}</p>}
-            </div>
-
-            {/* Status */}
-            <div style={{
-              borderRadius: 20,
-              height: 110,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              border: `2.5px solid ${countdown !== null ? '#4285F4' : 'rgba(255,255,255,0.9)'}`,
-              background: countdown !== null
-                ? 'linear-gradient(135deg, #e8f0fe, #fce8f3)'
-                : 'rgba(255,255,255,0.85)',
-              backdropFilter: 'blur(8px)',
-              transition: 'all 0.3s',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.07)',
-              overflow: 'hidden',
-            }}>
-              {countdown !== null ? (
-                <div key={countdown} className="pop-in" style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '0 28px' }}>
-                  <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    {countdown > 0 && <div className="pulse-ring" style={{ position: 'absolute', width: 56, height: 56, borderRadius: '50%', background: '#4285F4', opacity: 0.18 }} />}
-                    <span style={{ fontSize: '2.8rem' }}>{emoji}</span>
-                  </div>
-                  <span style={{ fontSize: '3rem', fontWeight: 900, lineHeight: 1, color: countdown === 0 ? '#4285F4' : '#373636' }}>
-                    {countdown === 0 ? 'SMILE!' : countdown}
-                  </span>
-                </div>
-              ) : (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div className={isOffline ? '' : 'status-dot-live'} style={{ width: 14, height: 14, borderRadius: '50%', background: isOffline ? '#EA4335' : '#34A853', boxShadow: `0 0 0 5px ${isOffline ? 'rgba(234,67,53,0.2)' : 'rgba(52,168,83,0.2)'}` }} />
-                  <p style={{ margin: 0, fontSize: 22, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 2 }}>{systemStatus}</p>
-                </div>
-              )}
+            <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 8, minHeight: 0 }}>
+              {FRAMES.map((name, idx) => (
+                <button key={name} onClick={() => setSelectedFrame(idx + 1)} className={`frame-btn ${selectedFrame === idx + 1 ? 'active' : ''}`}>
+                  <img src={`/frames/${name}.png`} alt={`Frame ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'fill', display: 'block' }} />
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* ── RIGHT — Camera (large) ── */}
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
-            {/* Bracket hints */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 6px' }}>
-              <span style={{ fontSize: 22, fontWeight: 900, color: '#EA4335', opacity: 0.4 }}>&lt;</span>
-              <span style={{ fontSize: 22, fontWeight: 900, color: '#34A853', opacity: 0.4 }}>&gt;</span>
+          {/* ══ TOP-RIGHT: Camera ══ */}
+          <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 18, padding: '16px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, flexShrink: 0 }}>
+              <span style={{ fontSize: 16, fontWeight: 900, color: '#EA4335', opacity: 0.4 }}>&lt;</span>
+              <span style={{ fontSize: 16, fontWeight: 900, color: '#34A853', opacity: 0.4 }}>&gt;</span>
             </div>
-
-            {/* Camera container */}
-            <div style={{
-              borderRadius: 20,
-              overflow: 'hidden',
-              boxShadow: '0 16px 56px rgba(0,0,0,0.2)',
-              border: '6px solid rgba(255,255,255,0.95)',
-              position: 'relative',
-              background: '#1e1e1e',
-              width: '100%',
-              aspectRatio: '16/9',
-            }}>
+            <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.18)', border: '4px solid rgba(255,255,255,0.95)', position: 'relative', background: '#1e1e1e', minHeight: 0 }}>
               <img
                 src="http://127.0.0.1:5000/video_feed"
                 alt=""
                 style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                 onError={(e) => { (e.target as HTMLImageElement).src = "https://via.placeholder.com/640x360?text=Connecting..."; }}
               />
-              {isFlashing && (
-                <div className="camera-flash" style={{ position: 'absolute', inset: 0, background: 'white', zIndex: 50, pointerEvents: 'none' }} />
-              )}
+              {isFlashing && <div className="camera-flash" style={{ position: 'absolute', inset: 0, background: 'white', zIndex: 50, pointerEvents: 'none' }} />}
             </div>
-
-            {/* Color bar */}
-            <div style={{ display: 'flex', gap: 5 }}>
+            <div style={{ display: 'flex', gap: 4, marginTop: 8, flexShrink: 0 }}>
               {(['#4285F4','#EA4335','#F9AB00','#34A853','#4285F4','#EA4335'] as string[]).map((c, i) => (
-                <div key={i} style={{ height: 7, borderRadius: 999, background: c, flex: 1, opacity: 0.65 }} />
+                <div key={i} style={{ height: 5, borderRadius: 999, background: c, flex: 1, opacity: 0.65 }} />
               ))}
             </div>
+          </div>
+
+          {/* ══ BOTTOM-LEFT: Email (compact) ══ */}
+          <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 16, padding: '14px 18px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+              <div style={{ width: 5, height: 20, borderRadius: 99, background: '#34A853' }} />
+              <label htmlFor="email" style={{ margin: 0, fontSize: 15, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 1.5 }}>Enter Email</label>
+            </div>
+            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={handleEmailKeyDown} placeholder="example@email.com" style={{ padding: '10px 14px', fontSize: 14 }} />
+            {savedEmail && <p style={{ margin: '6px 0 0', fontSize: 12, color: '#34A853', fontWeight: 700 }}>✓ {savedEmail}</p>}
+          </div>
+
+          {/* ══ BOTTOM-RIGHT: Status (compact) ══ */}
+          <div style={{
+            background: countdown !== null ? 'linear-gradient(135deg, #e8f0fe, #fce8f3)' : 'rgba(255,255,255,0.85)',
+            backdropFilter: 'blur(8px)', borderRadius: 16, padding: '14px 18px',
+            border: `1.5px solid ${countdown !== null ? '#4285F4' : 'rgba(255,255,255,0.9)'}`,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.07)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.3s', overflow: 'hidden',
+          }}>
+            {countdown !== null ? (
+              <div key={countdown} className="pop-in" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {countdown > 0 && <div className="pulse-ring" style={{ position: 'absolute', width: 44, height: 44, borderRadius: '50%', background: '#4285F4', opacity: 0.18 }} />}
+                  <span style={{ fontSize: '2rem' }}>{emoji}</span>
+                </div>
+                <span style={{ fontSize: '2.2rem', fontWeight: 900, lineHeight: 1, color: countdown === 0 ? '#4285F4' : '#373636' }}>
+                  {countdown === 0 ? 'SMILE!' : countdown}
+                </span>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div className={isOffline ? '' : 'status-dot-live'} style={{ width: 12, height: 12, borderRadius: '50%', background: isOffline ? '#EA4335' : '#34A853', boxShadow: `0 0 0 4px ${isOffline ? 'rgba(234,67,53,0.2)' : 'rgba(52,168,83,0.2)'}` }} />
+                <p style={{ margin: 0, fontSize: 19, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 2 }}>{systemStatus}</p>
+              </div>
+            )}
           </div>
 
         </div>
