@@ -1,3 +1,9 @@
 myenv/
 venv/
 captured_photos/
+__pycache__/
+framed_photos/
+*.pyc
+temp_frame.png
+Data/framed_selections.json
+.env

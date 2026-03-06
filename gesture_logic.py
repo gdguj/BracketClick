@@ -52,8 +52,8 @@ COUNTDOWN_SECONDS = 3
 def get_camera_and_detector():
     """Create camera and hand landmarker. Call once, reuse."""
     cap = cv2.VideoCapture(0)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     options = HandLandmarkerOptions(
         base_options=BaseOptions(model_asset_path="hand_landmarker.task"),
         running_mode=RunningMode.VIDEO,
@@ -113,15 +113,15 @@ def process_frame(frame, frame_id, detector, countdown_started, countdown_start_
     if countdown_started:
         elapsed = time.time() - countdown_start_time
         remaining = max(0, COUNTDOWN_SECONDS - int(elapsed))
-        cv2.putText(
-            display_frame,
-            f"Capturing in {remaining}",
-            (30, 50),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            1,
-            (0, 255, 0),
-            2,
-        )
+        # cv2.putText(
+        #     display_frame,
+        #     f"Capturing in {remaining}",
+        #     (30, 50),
+        #     cv2.FONT_HERSHEY_SIMPLEX,
+        #     1,
+        #     (0, 255, 0),
+        #     2,
+        # )
         if elapsed >= COUNTDOWN_SECONDS:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"photo_{timestamp}.jpg"
