@@ -75,7 +75,7 @@ function App() {
   const isOffline = systemStatus === 'SERVER OFFLINE';
 
   return (
-    <div style={{ minHeight: '100vh', height: '100vh', overflow: 'hidden', fontFamily: "'Nunito', sans-serif", background: 'linear-gradient(135deg, #e8f0fe 0%, #fff8e1 35%, #e6f4ea 65%, #fce8e6 100%)' }}>
+    <div style={{ minHeight: '100vh', overflowX: 'hidden', fontFamily: "'Nunito', sans-serif", background: 'linear-gradient(135deg, #e8f0fe 0%, #fff8e1 35%, #e6f4ea 65%, #fce8e6 100%)' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&display=swap');
 
@@ -92,6 +92,67 @@ function App() {
         @keyframes statusPulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
         .status-dot-live { animation: statusPulse 1.5s ease-in-out infinite; }
 
+        .booth {
+          width: 100%;
+          max-width: 1500px;
+          margin: 0 auto;
+          padding: 12px 18px 18px;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .camera-card {
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          background: rgba(255,255,255,0.88);
+          backdrop-filter: blur(10px);
+          border-radius: 22px;
+          padding: 16px;
+          border: 1.5px solid rgba(255,255,255,0.9);
+          box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+        }
+
+        .camera-shell {
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          border-radius: 16px;
+          overflow: hidden;
+          position: relative;
+          background: #1e1e1e;
+          border: 5px solid rgba(255,255,255,0.95);
+          box-shadow: 0 14px 44px rgba(0,0,0,0.22);
+        }
+
+        .frames-row {
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          display: flex;
+          gap: 10px;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          padding: 6px 2px;
+          box-sizing: border-box;
+        }
+
+        .bottom-row {
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 1fr 2fr;
+          gap: 12px;
+          align-items: stretch;
+        }
+        @media (max-width: 980px) {
+          .bottom-row { grid-template-columns: 1fr; }
+        }
+
         .frame-btn {
           border-radius: 10px;
           border: 3px solid #e0e0e0;
@@ -101,8 +162,10 @@ function App() {
           cursor: pointer;
           padding: 0;
           display: block;
-          width: 100%;
-          height: 100%;
+          width: 170px;
+          aspect-ratio: 16 / 9;
+          height: auto;
+          flex: 0 0 auto;
         }
         .frame-btn:hover { transform: scale(1.04); border-color: #aaa; }
         .frame-btn.active { border-color: #4285F4; box-shadow: 0 0 0 4px rgba(66,133,244,0.22); }
@@ -155,7 +218,7 @@ function App() {
       </header>
 
       {/* ── MAIN ── */}
-      <main style={{ maxWidth: 1300, margin: '0 auto', padding: '12px 28px 12px', height: 'calc(100vh - 90px)', display: 'flex', flexDirection: 'column', gap: 10, boxSizing: 'border-box' }}>
+      <main className="booth">
 
         {/* Gesture hint */}
         <div style={{
@@ -163,6 +226,7 @@ function App() {
           borderRadius: 999, padding: '7px 24px', flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
           border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+          maxWidth: 1280, margin: '0 auto',
         }}>
           <span style={{ fontSize: 16, fontWeight: 900, color: '#EA4335' }}>&lt;</span>
           <p style={{ margin: 0, fontSize: 13, color: '#5F6368', fontWeight: 700 }}>
@@ -171,47 +235,30 @@ function App() {
           <span style={{ fontSize: 16, fontWeight: 900, color: '#34A853' }}>&gt;</span>
         </div>
 
-        {/* ── 2x2 grid fills remaining height ── */}
-        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr auto', gap: 12, minHeight: 0 }}>
-
-          {/* ══ TOP-LEFT: Frames ══ */}
-          <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 18, padding: '16px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexShrink: 0 }}>
-              <div style={{ width: 5, height: 22, borderRadius: 99, background: '#4285F4' }} />
-              <h2 style={{ margin: 0, fontSize: 16, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 1.5 }}>Choose Frame</h2>
-            </div>
-            <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 8, minHeight: 0 }}>
-              {FRAMES.map((name, idx) => (
-                <button key={name} onClick={() => setSelectedFrame(idx + 1)} className={`frame-btn ${selectedFrame === idx + 1 ? 'active' : ''}`}>
-                  <img src={`/frames/${name}.png`} alt={`Frame ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'fill', display: 'block' }} />
-                </button>
-              ))}
-            </div>
+        {/* ══ CAMERA (center, full size) ══ */}
+        <section className="camera-card">
+          <div className="camera-shell">
+            <img
+              src="http://127.0.0.1:5000/video_feed"
+              alt=""
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+              onError={(e) => { (e.target as HTMLImageElement).src = "https://via.placeholder.com/640x360?text=Connecting..."; }}
+            />
+            {isFlashing && <div className="camera-flash" style={{ position: 'absolute', inset: 0, background: 'white', zIndex: 50, pointerEvents: 'none' }} />}
           </div>
+        </section>
 
-          {/* ══ TOP-RIGHT: Camera ══ */}
-          <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 18, padding: '16px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, flexShrink: 0 }}>
-              <span style={{ fontSize: 16, fontWeight: 900, color: '#EA4335', opacity: 0.4 }}>&lt;</span>
-              <span style={{ fontSize: 16, fontWeight: 900, color: '#34A853', opacity: 0.4 }}>&gt;</span>
-            </div>
-            <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.18)', border: '4px solid rgba(255,255,255,0.95)', position: 'relative', background: '#1e1e1e', minHeight: 0 }}>
-              <img
-                src="http://127.0.0.1:5000/video_feed"
-                alt=""
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={(e) => { (e.target as HTMLImageElement).src = "https://via.placeholder.com/640x360?text=Connecting..."; }}
-              />
-              {isFlashing && <div className="camera-flash" style={{ position: 'absolute', inset: 0, background: 'white', zIndex: 50, pointerEvents: 'none' }} />}
-            </div>
-            <div style={{ display: 'flex', gap: 4, marginTop: 8, flexShrink: 0 }}>
-              {(['#4285F4','#EA4335','#F9AB00','#34A853','#4285F4','#EA4335'] as string[]).map((c, i) => (
-                <div key={i} style={{ height: 5, borderRadius: 999, background: c, flex: 1, opacity: 0.65 }} />
-              ))}
-            </div>
-          </div>
+        {/* ══ FRAMES (single row under camera) ══ */}
+        <section className="frames-row" aria-label="Choose frame">
+          {FRAMES.map((name, idx) => (
+            <button key={name} onClick={() => setSelectedFrame(idx + 1)} className={`frame-btn ${selectedFrame === idx + 1 ? 'active' : ''}`}>
+              <img src={`/frames/${name}.png`} alt={`Frame ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+            </button>
+          ))}
+        </section>
 
-          {/* ══ BOTTOM-LEFT: Email (compact) ══ */}
+        {/* ══ EMAIL + STATUS (33/66) ══ */}
+        <section className="bottom-row">
           <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 16, padding: '14px 18px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
               <div style={{ width: 5, height: 20, borderRadius: 99, background: '#34A853' }} />
@@ -221,7 +268,6 @@ function App() {
             {savedEmail && <p style={{ margin: '6px 0 0', fontSize: 12, color: '#34A853', fontWeight: 700 }}>✓ {savedEmail}</p>}
           </div>
 
-          {/* ══ BOTTOM-RIGHT: Status (compact) ══ */}
           <div style={{
             background: countdown !== null ? 'linear-gradient(135deg, #e8f0fe, #fce8f3)' : 'rgba(255,255,255,0.85)',
             backdropFilter: 'blur(8px)', borderRadius: 16, padding: '14px 18px',
@@ -247,8 +293,8 @@ function App() {
               </div>
             )}
           </div>
+        </section>
 
-        </div>
       </main>
     </div>
   );
