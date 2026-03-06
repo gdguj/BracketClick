@@ -75,7 +75,7 @@ function App() {
   const isOffline = systemStatus === 'SERVER OFFLINE';
 
   return (
-    <div style={{ minHeight: '100vh', overflowX: 'hidden', fontFamily: "'Nunito', sans-serif", background: 'linear-gradient(135deg, #e8f0fe 0%, #fff8e1 35%, #e6f4ea 65%, #fce8e6 100%)' }}>
+    <div style={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', fontFamily: "'Nunito', sans-serif", background: 'linear-gradient(135deg, #e8f0fe 0%, #fff8e1 35%, #e6f4ea 65%, #fce8e6 100%)' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&display=swap');
 
@@ -93,60 +93,70 @@ function App() {
         .status-dot-live { animation: statusPulse 1.5s ease-in-out infinite; }
 
         .booth {
+          flex: 1;
+          min-height: 0;
+          overflow: hidden;
           width: 100%;
           max-width: 1500px;
           margin: 0 auto;
-          padding: 12px 18px 18px;
+          padding: 8px 16px 12px;
           box-sizing: border-box;
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 8px;
         }
 
         .camera-card {
+          flex: 1;
+          min-height: 0;
           width: 100%;
           max-width: 1280px;
           margin: 0 auto;
           background: rgba(255,255,255,0.88);
           backdrop-filter: blur(10px);
-          border-radius: 22px;
-          padding: 16px;
+          border-radius: 16px;
+          padding: 10px;
           border: 1.5px solid rgba(255,255,255,0.9);
           box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+          display: flex;
+          flex-direction: column;
         }
 
         .camera-shell {
+          flex: 1;
+          min-height: 0;
           width: 100%;
-          aspect-ratio: 16 / 9;
-          border-radius: 16px;
+          border-radius: 12px;
           overflow: hidden;
           position: relative;
           background: #1e1e1e;
-          border: 5px solid rgba(255,255,255,0.95);
+          border: 4px solid rgba(255,255,255,0.95);
           box-shadow: 0 14px 44px rgba(0,0,0,0.22);
         }
 
         .frames-row {
+          flex-shrink: 0;
           width: 100%;
           max-width: 1280px;
           margin: 0 auto;
           display: flex;
-          gap: 10px;
+          gap: 8px;
           justify-content: center;
           align-items: center;
           flex-wrap: nowrap;
           overflow-x: auto;
-          padding: 6px 2px;
+          padding: 4px 2px;
           box-sizing: border-box;
         }
 
         .bottom-row {
+          flex-shrink: 0;
           width: 100%;
           max-width: 1280px;
           margin: 0 auto;
           display: grid;
           grid-template-columns: 1fr 2fr;
-          gap: 12px;
+          gap: 8px;
           align-items: stretch;
         }
         @media (max-width: 980px) {
@@ -154,15 +164,15 @@ function App() {
         }
 
         .frame-btn {
-          border-radius: 10px;
-          border: 3px solid #e0e0e0;
+          border-radius: 8px;
+          border: 2px solid #e0e0e0;
           transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
           background: white;
           overflow: hidden;
           cursor: pointer;
           padding: 0;
           display: block;
-          width: 170px;
+          width: 200px;
           aspect-ratio: 16 / 9;
           height: auto;
           flex: 0 0 auto;
@@ -186,7 +196,7 @@ function App() {
       `}</style>
 
       {/* ── HEADER ── */}
-      <header style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(12px)', borderBottom: '2px solid rgba(255,255,255,0.9)', padding: '14px 0 0', position: 'sticky', top: 0, zIndex: 100 }}>
+      <header style={{ flexShrink: 0, background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(12px)', borderBottom: '2px solid rgba(255,255,255,0.9)', padding: '8px 0 0', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: 1300, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', gap: 7 }}>
             {(['#4285F4','#EA4335','#F9AB00','#34A853'] as string[]).map((c, i) => (
@@ -210,7 +220,7 @@ function App() {
             ))}
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 3, padding: '10px 28px 0', maxWidth: 1300, margin: '0 auto' }}>
+        <div style={{ display: 'flex', gap: 3, padding: '6px 28px 0', maxWidth: 1300, margin: '0 auto' }}>
           {(['#4285F4','#EA4335','#F9AB00','#34A853'] as string[]).map((c, i) => (
             <div key={i} style={{ height: 6, borderRadius: 999, background: c, flex: 1 }} />
           ))}
@@ -222,14 +232,15 @@ function App() {
 
         {/* Gesture hint */}
         <div style={{
+          flexShrink: 0,
           background: 'rgba(255,255,255,0.75)', backdropFilter: 'blur(8px)',
-          borderRadius: 999, padding: '7px 24px', flexShrink: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+          borderRadius: 999, padding: '5px 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
           border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
           maxWidth: 1280, margin: '0 auto',
         }}>
           <span style={{ fontSize: 16, fontWeight: 900, color: '#EA4335' }}>&lt;</span>
-          <p style={{ margin: 0, fontSize: 13, color: '#5F6368', fontWeight: 700 }}>
+          <p style={{ margin: 0, fontSize: 12, color: '#5F6368', fontWeight: 700 }}>
             Make <strong style={{ color: '#373636' }}>&lt; &gt;</strong> gestures with both hands to start the countdown
           </p>
           <span style={{ fontSize: 16, fontWeight: 900, color: '#34A853' }}>&gt;</span>
@@ -259,18 +270,18 @@ function App() {
 
         {/* ══ EMAIL + STATUS (33/66) ══ */}
         <section className="bottom-row">
-          <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 16, padding: '14px 18px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+          <div style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: 14, padding: '10px 14px', border: '1.5px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
               <div style={{ width: 5, height: 20, borderRadius: 99, background: '#34A853' }} />
               <label htmlFor="email" style={{ margin: 0, fontSize: 15, fontWeight: 900, color: '#373636', textTransform: 'uppercase', letterSpacing: 1.5 }}>Enter Email</label>
             </div>
-            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={handleEmailKeyDown} placeholder="example@email.com" style={{ padding: '10px 14px', fontSize: 14 }} />
+            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={handleEmailKeyDown} placeholder="example@email.com" style={{ padding: '8px 12px', fontSize: 14 }} />
             {savedEmail && <p style={{ margin: '6px 0 0', fontSize: 12, color: '#34A853', fontWeight: 700 }}>✓ {savedEmail}</p>}
           </div>
 
           <div style={{
             background: countdown !== null ? 'linear-gradient(135deg, #e8f0fe, #fce8f3)' : 'rgba(255,255,255,0.85)',
-            backdropFilter: 'blur(8px)', borderRadius: 16, padding: '14px 18px',
+            backdropFilter: 'blur(8px)', borderRadius: 14, padding: '10px 14px',
             border: `1.5px solid ${countdown !== null ? '#4285F4' : 'rgba(255,255,255,0.9)'}`,
             boxShadow: '0 4px 20px rgba(0,0,0,0.07)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
