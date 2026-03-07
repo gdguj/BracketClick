@@ -41,7 +41,7 @@ Start **both** the backend and the frontend (use two terminals).
 From the project root (with venv activated):
 
 ```bash
-python app.py
+cd python app.py
 ```
 
 Backend runs at **http://127.0.0.1:5000** (camera + gesture detection + `/video_feed` stream).
