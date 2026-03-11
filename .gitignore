@@ -7,3 +7,4 @@ framed_photos/
 temp_frame.png
 Data/framed_selections.json
 .env
+_env
